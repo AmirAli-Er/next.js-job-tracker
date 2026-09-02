@@ -1,22 +1,21 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { MongoClient } from "mongodb";
-import { headers } from "next/headers";
+import { getMongoDatabase, getMongoClient } from "@/lib/db";
 
-const client = new MongoClient(process.env.MONGODB_URI!)
-const db = client.db()
+const database = await getMongoDatabase();
+const client = await getMongoClient();
+
 export const auth = betterAuth({
-    database:mongodbAdapter(db, {
-        client
-    }),
-    emailAndPassword:{
-        enabled:true
-    }
-})
-// for server side components which dont have access to the client
-export async function getSession(){
-    const result = await auth.api.getSession({
-        headers: await headers()
-    })
-    return result
-}
+  database: mongodbAdapter(database, {
+    client,
+  }),
+
+  emailAndPassword: {
+    enabled: true,
+  },
+
+  session: {
+    expiresIn: 60 * 60 * 24 * 7, // 7 days
+    updateAge: 60 * 60 * 24, // Refresh once per day
+  },
+});

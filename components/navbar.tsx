@@ -9,11 +9,12 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
-import { useSession } from "@/lib/auth/auth-client"
+import { signOut, useSession } from "@/lib/auth/auth-client"
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const { data } = useSession()
-
+    const route = useRouter()
   return (
     <nav className="flex w-full items-center justify-between p-3">
       {/* Logo */}
@@ -38,7 +39,14 @@ export default function Navbar() {
                 </NavigationMenuItem>
 
                 <NavigationMenuItem>
-                  <NavigationMenuLink>
+                  <NavigationMenuLink onClick={async()=>{
+                    const result = await signOut()
+                    if (result.data){
+                        route.push('/sign-up')
+                    }else{
+                        alert("somthing went wrong")
+                    }
+                    }}>
                     Sign out
                   </NavigationMenuLink>
                 </NavigationMenuItem>
