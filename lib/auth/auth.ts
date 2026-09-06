@@ -1,21 +1,54 @@
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
-import { getMongoDatabase, getMongoClient } from "@/lib/db";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { initUserBord } from "../init-user-board";
+import connectDB from "../db";
 
-const database = await getMongoDatabase();
-const client = await getMongoClient();
+const mongooseInstance = await connectDB();
+const client = mongooseInstance.connection.getClient();
+const db = client.db();
 
 export const auth = betterAuth({
-  database: mongodbAdapter(database, {
+  database: mongodbAdapter(db, {
     client,
   }),
-
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 60,
+    },
+  },
   emailAndPassword: {
     enabled: true,
   },
-
-  session: {
-    expiresIn: 60 * 60 * 24 * 7, // 7 days
-    updateAge: 60 * 60 * 24, // Refresh once per day
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          if (user.id) {
+            await initUserBord(user.id);
+          }
+        },
+      },
+    },
   },
 });
+
+export async function getSession() {
+  const result = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  return result;
+}
+
+export async function signOut() {
+  const result = await auth.api.signOut({
+    headers: await headers(),
+  });
+
+  if (result.success) {
+    redirect("/sign-in");
+  }
+}

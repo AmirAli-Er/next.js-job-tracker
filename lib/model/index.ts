@@ -1,5 +1,5 @@
 import './board'
-import './job-applicatins'
+import './job-applications'
 import './column'
 
 export {default as Board} from './board'

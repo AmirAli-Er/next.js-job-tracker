@@ -13,7 +13,7 @@ import { signOut, useSession } from "@/lib/auth/auth-client"
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
-  const { data } = useSession()
+  const { data, isPending } = useSession()
     const route = useRouter()
   return (
     <nav className="flex w-full items-center justify-between p-3">
@@ -28,7 +28,8 @@ export default function Navbar() {
 
       {/* Right side */}
       <div className="flex items-center gap-6">
-        {data?.user ? (
+        {
+          isPending ? <p>loading...</p> :data?.user ? (
           <>
             <NavigationMenu>
               <NavigationMenuList className="gap-2">
@@ -68,7 +69,8 @@ export default function Navbar() {
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
-        )}
+        )
+        }
       </div>
     </nav>
   )

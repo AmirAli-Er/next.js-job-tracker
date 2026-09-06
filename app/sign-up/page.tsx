@@ -49,6 +49,7 @@ export default function SignUp(){
         }
     }
         return (
+          
     <div className="flex justify-center">
         <Card className="w-full max-w-lg max-h-lg" >
       <CardHeader>

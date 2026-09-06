@@ -24,6 +24,7 @@ export default function Login(){
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     const router = useRouter()
+    
     async function handleSubmit(e:React.FormEvent){
         e.preventDefault()
         setError("")
@@ -46,7 +47,9 @@ export default function Login(){
             setLoading(false)
         }
     }
-        return (
+    
+    
+      return (
     <div className="flex justify-center">
         <Card className="w-full max-w-lg max-h-lg" >
       <CardHeader>
@@ -89,7 +92,7 @@ export default function Login(){
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <p className="text-muted-foreground">you don't have account? <Link className="underline mx-2"  href={"/sign-in"}>Sign in</Link></p>
+        <p className="text-muted-foreground">you don&apost have account? <Link className="underline mx-2"  href={"/sign-in"}>Sign in</Link></p>
         <Button onClick={handleSubmit} disabled={loading} className="w-full">
           Login
         </Button>
@@ -98,4 +101,5 @@ export default function Login(){
     </Card>
     </div>
     )
+        
 }
