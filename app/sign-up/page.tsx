@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { toast } from "@/components/ui/toast";
 import { signUp } from "@/lib/auth/auth-client";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -46,6 +47,12 @@ export default function SignUp(){
         }finally{
             
             setLoading(false)
+        }
+        if (error!==""){
+          toast.add({
+            type: "warning",
+            description: error,
+          })
         }
     }
         return (
@@ -108,11 +115,11 @@ export default function SignUp(){
         </Button>
         
       </CardFooter>
-      {
+      {/* {
         error && <div>
         {error}
       </div>
-      }
+      } */}
     </Card>
     </div>
     )

@@ -11,11 +11,12 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { toast } from "@/components/ui/toast";
 import { signIn } from "@/lib/auth/auth-client";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 export default function Login(){
@@ -34,7 +35,6 @@ export default function Login(){
                 email,
                 password
             })
-            console.log(result)
             if(result.error){
                 setError(result.error.message ?? "Failed to login")
             }else{
@@ -42,9 +42,16 @@ export default function Login(){
             }
         }catch(err){
             setError("There's a problem ... Try again later")
+            
         }finally{
             
             setLoading(false)
+        }
+        if (error!==""){
+          toast.add({
+            type: "warning",
+            description: error,
+          })
         }
     }
     
