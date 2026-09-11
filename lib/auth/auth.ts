@@ -4,9 +4,10 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { initUserBord } from "../init-user-board";
 import connectDB from "../db";
+import { MongoClient } from "mongodb";
 
 const mongooseInstance = await connectDB();
-const client = mongooseInstance.connection.getClient();
+const client = mongooseInstance.connection.getClient() as unknown as MongoClient;
 const db = client.db();
 
 export const auth = betterAuth({
