@@ -73,25 +73,25 @@ export default connectDB;
 
 
 
-if (process.env.NODE_ENV === "development") {
-  if (!global._mongoClientPromise) {
-    const mongoClient = new MongoClient(uri, options);
-    global._mongoClientPromise = mongoClient.connect();
-  }
+// if (process.env.NODE_ENV === "development") {
+//   if (!global._mongoClientPromise) {
+//     const mongoClient = new MongoClient(uri, options);
+//     global._mongoClientPromise = mongoClient.connect();
+//   }
 
-  clientPromise = global._mongoClientPromise;
-} else {
-  const mongoClient = new MongoClient(uri, options);
-  clientPromise = mongoClient.connect();
-}
+//   clientPromise = global._mongoClientPromise;
+// } else {
+//   const mongoClient = new MongoClient(uri, options);
+//   clientPromise = mongoClient.connect();
+// }
 
-export async function getMongoClient() {
-  return clientPromise;
-}
+// export async function getMongoClient() {
+//   return clientPromise;
+// }
 
 
 
-export async function getMongoDatabase() {
-  const client = await getMongoClient();
-  return client.db();
-}
+// export async function getMongoDatabase() {
+//   const client = await getMongoClient();
+//   return client.db();
+// }
